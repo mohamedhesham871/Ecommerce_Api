@@ -1,0 +1,20 @@
+﻿using Domain.Models;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.Contract
+{
+    public interface IGenricRepo<TEntity,Tkey> where TEntity : BaseEntity<Tkey>
+    {
+        Task<TEntity> GetById(Tkey id);
+        Task<IEnumerable<TEntity>> GetAll();
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
+    }
+    
+}
