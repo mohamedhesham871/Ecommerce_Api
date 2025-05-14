@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Models;
+using Services.Specifications;
 namespace Services
 
 {
@@ -33,8 +34,10 @@ namespace Services
         }
         public async Task<IEnumerable<ProdcutResponse>> GetAllProductsAsync()
         {
-            var  Repo= _unitOfwork.GetRepository<Product, int>();
-            var products = await Repo.GetAllAsync();
+            // for Specification
+            var spec = new  ProdcutSpecificationWithBrandAndType(); //With no Filters
+            var Repo = _unitOfwork.GetRepository<Product, int>();
+            var products = await Repo.GetAllAsync(spec);
 
             var ProductResult = mapper.Map<IEnumerable<ProdcutResponse>>(products);
 
@@ -45,7 +48,8 @@ namespace Services
 
         public async Task<ProdcutResponse> GetProductByIdAsync(int id)
         {
-           var Product=_unitOfwork.GetRepository<Product, int>().GetByIdAsync;
+            var spec = new ProdcutSpecificationWithBrandAndType(id);// Filter With Id
+            var Product=_unitOfwork.GetRepository<Product, int>().GetByIdAsync(spec);
 
           return mapper.Map<ProdcutResponse>(Product);
 
