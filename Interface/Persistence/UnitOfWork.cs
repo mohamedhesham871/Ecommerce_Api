@@ -12,6 +12,7 @@ namespace Persistence
     public class UnitOfWork(StoreDbContext _storeDbContext) : IUnitOfwork
     {
         private readonly Dictionary<string, object> _repositories = [];
+
         public IGenricRepo<TEntity, Tkey> GetRepository<TEntity, Tkey>() where TEntity : BaseEntity<Tkey>
         {
             //return new GenericRepo<TEntity, Tkey>(_storeDbContext);
