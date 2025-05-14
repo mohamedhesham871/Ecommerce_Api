@@ -27,12 +27,12 @@ namespace Persistence
             _storeDbContext.Set<TEntity>().Update(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
           return await _storeDbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetById(TKey id)
+        public async Task<TEntity> GetByIdAsync(TKey id)
         {
             return await _storeDbContext.Set<TEntity>().FindAsync(id);
         }

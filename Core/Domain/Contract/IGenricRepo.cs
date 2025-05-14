@@ -10,8 +10,8 @@ namespace Domain.Contract
 {
     public interface IGenricRepo<TEntity,Tkey> where TEntity : BaseEntity<Tkey>
     {
-        Task<TEntity> GetById(Tkey id);
-        Task<IEnumerable<TEntity>> GetAll();
+        Task<TEntity> GetByIdAsync(Tkey id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
         void Add(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);

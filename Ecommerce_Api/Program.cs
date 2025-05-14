@@ -1,8 +1,12 @@
+using AbstractionServices;
 using Domain.Contract;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Persistence;
 using Persistence.Data.Contexts;
+using Services;
+using Services.MappingProfile;
 
 namespace Ecommerce_Api
 {
@@ -14,6 +18,7 @@ namespace Ecommerce_Api
 
             // Add services to the container.
 
+            #region Services
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +27,10 @@ namespace Ecommerce_Api
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            builder.Services.AddScoped<IUnitOfwork, UnitOfWork>();
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
+            builder.Services.AddScoped<IServicesManager, ServicesManager>();
+            #endregion
             var app = builder.Build();
 
             #region Need To Apply Data Seeding 
@@ -34,6 +43,7 @@ namespace Ecommerce_Api
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
