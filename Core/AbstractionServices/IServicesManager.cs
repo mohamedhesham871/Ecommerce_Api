@@ -9,5 +9,7 @@ namespace AbstractionServices
     public  interface IServicesManager
     {
         public IProductServices ProductServices { get; }
+        public IBasketServices BasketServices { get; }
+        public ICashServices CashServices { get; }
     }
 }

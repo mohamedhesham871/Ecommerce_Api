@@ -1,6 +1,9 @@
 ﻿using AbstractionServices;
 using Microsoft.AspNetCore.Mvc;
+using Presentaion.AttributeFolder;
+using Shared;
 using Shared.Dtos.Prodcut;
+using Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +17,11 @@ namespace Presentaion.Controllers
     public class ProductController (IServicesManager _servicesManager):ControllerBase
     {
         // Get All Products
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProdcutResponse>>> GetAllProducts()
+        [HttpGet]                                                                //int?BrandId ,int? TypeId,SortingExpression? sorting   instad of this make Complex class
+        [Cash(120)]
+        public async Task<ActionResult<PaginationResponse<ProdcutResponse>>> GetAllProducts([FromQuery]ProductFilteration productFilteration)
         {
-            var products= await _servicesManager.ProductServices.GetAllProductsAsync();
+            var products= await _servicesManager.ProductServices.GetAllProductsAsync(productFilteration);
 
             return Ok(products);
         }
@@ -25,11 +29,8 @@ namespace Presentaion.Controllers
         [HttpGet("{id:int}")]  //BaseUrl/Product/{id}
         public async Task<ActionResult<ProdcutResponse>> GetProductById(int id)
         {
-            var result = _servicesManager.ProductServices.GetProductByIdAsync(id);
-            if (result == null)
-            {
-                return NotFound();
-            }
+            var result = await _servicesManager.ProductServices.GetProductByIdAsync(id);
+            
             return Ok(result);
         }
         // Get All Brands

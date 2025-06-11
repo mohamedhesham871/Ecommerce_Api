@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Persistence.FactorRegistration
 {
-    public class ProductBrand : BaseEntity<int>
+    class FactorRepoRegister
     {
     }
 }

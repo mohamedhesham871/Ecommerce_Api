@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Models.productMoulde
 {
     public class Product : BaseEntity<int>
     {
         public string Description { get; set; } = default!;
         public decimal Price { get; set; }
         public string PictureUrl { get; set; } = default!;
-       
+
         #region Relation With Brand table 
         public int BrandID { set; get; }
         //nae the navigation property to Brand table 

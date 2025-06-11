@@ -20,6 +20,7 @@ namespace Persistence
             }
             // check if the specifications has includes
 
+            #region include
             //.. Can Use for Loop Or Use Aggregate Function
             //if (specifications.IncludesExpression != null && specifications.IncludesExpression.Count > 0)
             //{
@@ -28,9 +29,27 @@ namespace Persistence
             //        inputQuery = inputQuery.Include(include);
             //    }
             //}
-
             inputQuery = specifications.IncludesExpression
                       .Aggregate(inputQuery, (current, include) => current.Include(include));
+
+
+            #endregion
+            // check if the specifications has order by
+            if (specifications.OrderBy is not null)
+            {
+                inputQuery = inputQuery.OrderBy(specifications.OrderBy);
+            }
+            else if(specifications.OrderByDesc is not null)
+            {
+                inputQuery = inputQuery.OrderByDescending(specifications.OrderByDesc);
+            }
+
+            //Apply Pagination on Query
+            if (specifications.IsPagingEnabled)
+            {
+                inputQuery = inputQuery.Skip(specifications.Skip)
+                    .Take(specifications.Take);
+            }
             return inputQuery;
         }
     }
