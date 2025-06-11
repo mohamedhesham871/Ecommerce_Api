@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence
+namespace Persistence.Repo
 {
     public class GenericRepo<TEntity, TKey>(StoreDbContext _storeDbContext) : IGenricRepo<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
@@ -30,7 +30,7 @@ namespace Persistence
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-          return await _storeDbContext.Set<TEntity>().ToListAsync();
+            return await _storeDbContext.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity?> GetByIdAsync(TKey id)
@@ -49,6 +49,15 @@ namespace Persistence
         {
             var res = await SpecificationEvaluator.crateQuery(_storeDbContext.Set<TEntity>(), specifications).ToListAsync();
             return res;
+        }
+
+
+
+        public async Task<int> TotalCountQueryAsync(ISpecifications<TEntity> specifications)
+        {
+            // if i Sent Specification it Still Does 't work So I Will Bulid another Specification Not include pagination
+            return await SpecificationEvaluator.crateQuery(_storeDbContext.Set<TEntity>(), specifications).CountAsync();
+
         }
     }
 

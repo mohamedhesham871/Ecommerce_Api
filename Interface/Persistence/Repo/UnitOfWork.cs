@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence
+namespace Persistence.Repo
 {
     public class UnitOfWork(StoreDbContext _storeDbContext) : IUnitOfwork
     {
@@ -18,7 +18,7 @@ namespace Persistence
             //return new GenericRepo<TEntity, Tkey>(_storeDbContext);
             //this Way UP we make Object Every Time So To Avoid this Make Dictionry
 
-            if(_repositories.ContainsKey(typeof(TEntity).Name))
+            if (_repositories.ContainsKey(typeof(TEntity).Name))
             {             // Casting Object 
                 return (IGenricRepo<TEntity, Tkey>)_repositories[typeof(TEntity).Name];
             }
@@ -30,12 +30,12 @@ namespace Persistence
             }
         }
 
-       
-    
 
-     //make Every thing Genric Class 
-   
-     
+
+
+        //make Every thing Genric Class 
+
+
 
         public Task<int> SaveChanges()
         {
@@ -43,8 +43,8 @@ namespace Persistence
         }
 
 
-           
-        
+
+
 
     }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Exceptions
 {
-    public class ProductType : BaseEntity<int>
+    public class BadRequestException(string Message) : Exception(message: Message)
     {
     }
 }

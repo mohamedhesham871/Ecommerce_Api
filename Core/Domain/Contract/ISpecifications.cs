@@ -10,7 +10,14 @@ namespace Domain.Contract
 {
     public  interface ISpecifications<T> where T : class
     {
-        Expression<Func<T, bool>>? Criteria { get; set; }
-        List<Expression<Func<T, object>>> IncludesExpression { get; set; }
+        Expression<Func<T, bool>>? Criteria { get;  }
+        List<Expression<Func<T, object>>> IncludesExpression { get; }
+        Expression<Func<T, object>>? OrderBy { get;  }
+        Expression<Func<T, object>>? OrderByDesc { get; }
+        int Skip { get; }
+        int Take { get; }
+        bool IsPagingEnabled { get; }
+       
+
     }
 }

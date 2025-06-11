@@ -21,6 +21,7 @@ namespace Domain.Contract
         void Add(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
+        Task<int> TotalCountQueryAsync(ISpecifications<TEntity> specifications);
     }
     
 }

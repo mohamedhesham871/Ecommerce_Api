@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Models;
 using Shared.Dtos.Prodcut;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Domain.Models.productMoulde;
 namespace Services.MappingProfile
 {
     public  class ProductProfile : Profile

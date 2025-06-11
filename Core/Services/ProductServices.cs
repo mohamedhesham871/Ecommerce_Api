@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Models;
 using Services.Specifications;
+using Shared.Enums;
+using Shared;
+using Domain.Exceptions;
+using Domain.Models.productMoulde;
 namespace Services
 
 {
-     public class ProductServices(IUnitOfwork _unitOfwork, IMapper mapper) : IProductServices
+    public class ProductServices(IUnitOfwork _unitOfwork, IMapper mapper) : IProductServices
     {
 
         public async Task<IEnumerable<BrandResponse>> GetAllBrandsAsync()
@@ -32,16 +35,23 @@ namespace Services
 
             return TypesResult;
         }
-        public async Task<IEnumerable<ProdcutResponse>> GetAllProductsAsync()
+        public async Task<PaginationResponse<ProdcutResponse>> GetAllProductsAsync(ProductFilteration productFilteration)
         {
             // for Specification
-            var spec = new  ProdcutSpecificationWithBrandAndType(); //With no Filters
+            var spec = new  ProdcutSpecificationWithBrandAndType( productFilteration); //With no Filters
             var Repo = _unitOfwork.GetRepository<Product, int>();
             var products = await Repo.GetAllAsync(spec);
-
-            var ProductResult = mapper.Map<IEnumerable<ProdcutResponse>>(products);
-
-            return ProductResult;
+            var SpecCount = new ProductSpecificationCount(productFilteration);
+            var ProductCount =await _unitOfwork.GetRepository<Product,int>().TotalCountQueryAsync(SpecCount);
+            var prodRes = mapper.Map<IEnumerable<ProdcutResponse>>(products);
+            var paginationMetaData = new PaginationResponse<ProdcutResponse>()//Constructor
+            {
+                  PageSize= productFilteration.PageSize,
+                  PageIndex= productFilteration.PageIndex,
+                  TotalCount= ProductCount,
+                Data = prodRes,
+            };
+            return paginationMetaData;
         }
 
        
@@ -49,9 +59,13 @@ namespace Services
         public async Task<ProdcutResponse> GetProductByIdAsync(int id)
         {
             var spec = new ProdcutSpecificationWithBrandAndType(id);// Filter With Id
-            var Product=_unitOfwork.GetRepository<Product, int>().GetByIdAsync(spec);
+            var Product=await  _unitOfwork.GetRepository<Product, int>().GetByIdAsync(spec);
+            if (Product == null)
+            {
+                throw new ProductNotFoundResponse(id);
+            }
 
-          return mapper.Map<ProdcutResponse>(Product);
+            return  mapper.Map<ProdcutResponse>(Product);
 
         }
     }
